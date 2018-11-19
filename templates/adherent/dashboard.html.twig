@@ -2,27 +2,6 @@
 
 {% block content %}
     <section class="adherent-dashboard l__wrapper">
-        <div class="adherent-dashboard__welcome">
-            <p>
-                {% if summary is not null %}
-                    <img src="{{ path('asset_url', { path: summary.picturePath }) }}" title="{{ 'dashboard.picture.update'|trans }}">
-                {% else %}
-                    <a href="{{ path('app_summary_manager_step', {step: 'photo'}) }}">
-                        <img src="/images/user.png" alt="{{ 'dashboard.picture.update'|trans }}" title="{{ 'dashboard.picture.update'|trans }}">
-                    </a>
-                {% endif %}
-            </p>
-
-            <p>
-                <b>{{ 'dashboard.welcome'|trans({'%firstname%': app.user.firstname}) }} 👋</b><br>
-                {% if app.user.isReferent or app.user.isDeputy or app.user.isSupervisor or app.user.isHost %}
-                    {{ get_user_level_label(app.user) }},
-                {% endif %}
-
-                {{ 'dashboard.adherent_since'|trans({'%date%': app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, "MMMM Y")}) }}
-            </p>
-        </div>
-
         <div class="adherent-dashboard__column-left">
             {% if area_stats is not null %}
                 <div class="localization">
@@ -65,6 +44,7 @@
                     </ul>
                 {% endif %}
             </div>
+
             <div class="events">
                 <b>{{ 'dashboard.my_events'|trans }}</b>
                 <hr>
@@ -85,9 +65,11 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-                <p style="text-align: center;">
-                    <a href="{{ path('app_referent_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
-                </p>
+                {% if is_granted('ROLE_REFERENT') %}
+                    <p style="text-align: center;">
+                        <a href="{{ path('app_referent_events') }}" class="button">{{ 'dashboard.show_events'|trans }}</a>
+                    </p>
+                {% endif %}
             </div>
 
             <div class="interests">
@@ -110,6 +92,27 @@
                     {% endif %}
                 </div>
             </div>
+        </div>
+
+        <div class="adherent-dashboard__welcome">
+            <p>
+                {% if summary is not null %}
+                    <img src="{{ path('asset_url', { path: summary.picturePath }) }}" title="{{ 'dashboard.picture.update'|trans }}">
+                {% else %}
+                    <a href="{{ path('app_summary_manager_step', {step: 'photo'}) }}">
+                        <img src="/images/user.png" alt="{{ 'dashboard.picture.update'|trans }}" title="{{ 'dashboard.picture.update'|trans }}">
+                    </a>
+                {% endif %}
+            </p>
+
+            <p>
+                <b>{{ 'dashboard.welcome'|trans({'%firstname%': app.user.firstname}) }} 👋</b><br>
+                {% if app.user.isReferent or app.user.isDeputy or app.user.isSupervisor or app.user.isHost %}
+                    {{ get_user_level_label(app.user) }},
+                {% endif %}
+
+                {{ 'dashboard.adherent_since'|trans({'%date%': app.user.registeredAt|localizeddate('none', 'none', 'fr_FR', null, "MMMM Y")}) }}
+            </p>
         </div>
 
         <div class="adherent-dashboard__column-right">
