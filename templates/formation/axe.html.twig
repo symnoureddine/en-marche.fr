@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block banner '' %}
+{% block page_title axe.title %}
+{% block meta_description axe.description %}
+
+{% block canonical_url url('app_formation_axe', { 'slug': axe.slug }) %}
+
+{% block final_javascripts include('bot/_javascript.html.twig') %}
+
+{% block base_stylesheets %}
+    {{ parent() }}
+    
+    <link href="{{ asset('css/emoji.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+    <main class="content">
+        <section class="programme">
+            <nav class="text--body">
+                <a class="l__wrapper space--20-0 icon--with-text"
+                   href="{{ path('app_formation_home') }}">
+                    {{ include('components/caret--left.html.twig') }}
+                    Retour à la liste
+                </a>
+            </nav>
+            <header class="space--60-0 l__wrapper--slim">
+                <h1 class="text--large b__nudge--bottom-small">
+                    {{ axe.title }}
+                </h1>
+            </header>
+
+            {% if axe.media and axe.displayMedia %}
+                <figure class="fullscreen">
+                    <img src="{{ media_asset(axe.media, {'q': 70}) }}"
+                         title="{{ axe.title }}"
+                         alt="{{ axe.media.name }}" />
+                </figure>
+            {% endif %}
+
+            <article class="l__wrapper--slim">
+                {{ axe.content|markdown }}
+            </article>
+
+            <div class="l__wrapper">
+                <ul class="espace-formation__cases">
+                    {% for article in axe.articles %}
+                        <li>
+                            <h1 class="text--large">
+                                <a href="{{ path('app_formation_article', { 'slug': article.slug }) }}"
+                                   class="link--no-decor">
+                                    {{ article.title }}
+                                </a>
+                            </h1>
+                            <div>
+                                <a href="{{ path('app_formation_article', { 'slug': article.slug }) }}"
+                                   class="btn btn--green--apple">Lire</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+    </main>
+{% endblock %}
