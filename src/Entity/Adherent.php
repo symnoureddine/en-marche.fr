@@ -112,7 +112,7 @@ class Adherent implements UserInterface, UserEntityInterface, GeoPointInterface,
     private $oldPassword;
 
     /**
-     * @ORM\Column(length=6, nullable=true)
+     * @ORM\Column(length=80, nullable=true)
      *
      * @JMS\Groups({"adherent_change_diff"})
      */

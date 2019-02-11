@@ -371,3 +371,32 @@ Feature:
 
     When I click on the email link "activation_link"
     Then I should be on "/adhesion"
+
+  @javascript
+  Scenario: I can become adherent with a custom gender
+    Given the following fixtures are loaded:
+      | LoadUserData        |
+      | LoadReferentTagData |
+    And I am logged as "simple-user@example.ch"
+    And I am on "/adhesion"
+    And I fill in the following:
+      | become_adherent[address][country]    | FR                  |
+      | become_adherent[address][address]    | 1 rue des alouettes |
+      | become_adherent[gender]              | other               |
+      | become_adherent[phone][number]       | 06 12 34 56 78      |
+      | become_adherent[birthdate][day]      | 1                   |
+      | become_adherent[birthdate][month]    | 1                   |
+      | become_adherent[birthdate][year]     | 1980                |
+      | become_adherent[address][country]    | FR                  |
+      | become_adherent[address][postalCode] | 69001               |
+    And I click the "field-conditions" element
+    When I press "Je rejoins La République En Marche"
+    Then I should be on "/adhesion"
+    And I should see "Veuillez renseigner un sexe."
+
+    Given I fill in the following:
+      | become_adherent[customGender] | Etre non binaire |
+    When I press "Je rejoins La République En Marche"
+    Then I should be on "/espace-adherent/accueil"
+    And I should see "Votre compte adhérent est maintenant actif."
+    And the adherent "simple-user@example.ch" should have the "69" referent tag

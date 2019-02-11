@@ -20,14 +20,13 @@ class MembershipRequest implements MembershipInterface
      * @var string|null
      *
      * @Assert\NotBlank(message="common.gender.not_blank", groups={"Update"})
-     * @Assert\Choice(
-     *     callback={"AppBundle\ValueObject\Genders", "all"},
-     *     message="common.gender.invalid_choice",
-     *     strict=true,
-     *     groups={"Update"}
-     * )
      */
     public $gender;
+
+    /**
+     * @var string|null
+     */
+    public $customGender;
 
     /**
      * @var string

@@ -94,7 +94,6 @@ class MembershipController extends Controller
             ->add('submit', SubmitType::class, ['label' => 'Je rejoins La République En Marche'])
             ->handleRequest($request)
         ;
-
         try {
             if ($form->isSubmitted() && $form->isValid()) {
                 $this->get(MembershipRequestHandler::class)->registerAsAdherent($membership);
