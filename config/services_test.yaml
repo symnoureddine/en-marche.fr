@@ -1,0 +1,70 @@
+imports:
+    - { resource: services_dev.yaml }
+
+parameters:
+    ssl_public_key: '%env(SSL_PUBLIC_KEY)%'
+    ssl_private_key: '%env(SSL_PRIVATE_KEY)%'
+    ssl_encryption_key: '%env(SSL_ENCRYPTION_KEY)%'
+    app_host: "test.%env(APP_HOST)%"
+    amp_host: "test.%env(AMP_HOST)%"
+    legislatives_host: "test.legislatives.%app_host%"
+    adherent_interests:
+        agriculture: Agriculture
+        culture: Culture
+        economie: Économie
+        education: Éducation
+        egalite: Egalité F / H
+        emploi: Emploi
+        environement: Environnement
+        europe: Europe
+        international: International
+        institution: Vie publique & institutions
+        jeunesse: Jeunesse
+        justice: Justice
+        numerique: Numérique
+        sante: Santé
+        securite: Sécurité
+        territoire: Territoire
+        social: Affaires sociales
+        sport: Sport
+    adherent_unregistration_reasons:
+        emails: Je reçois trop d'e-mails
+        soutien: J'avais uniquement adhéré pour soutenir la candidature d'Emmanuel Macron
+        gouvernement: Je ne suis plus d'accord avec le gouvernement
+        elus: Je suis déçu(e) par mon/les élu(e)s LaREM
+        mouvement: Je ne me reconnais plus dans les actions du mouvement En Marche !
+        comite: Je suis en désaccord avec l’activité de mon comité local
+        autre: Autre
+
+services:
+    _defaults:
+        public: true
+
+    app.map.google_maps_static_provider:
+        class: 'Tests\AppBundle\Test\Map\DummyStaticMapProvider'
+
+    app.glide.cache_adapter:
+        class: 'League\Flysystem\Memory\MemoryAdapter'
+
+    old_sound_rabbit_mq.mailer_campaign_producer:
+        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
+        public: false
+
+    old_sound_rabbit_mq.mailer_transactional_producer:
+        class: 'Tests\AppBundle\Test\Producer\MailerNullProducer'
+        public: false
+
+    old_sound_rabbit_mq.referent_message_dispatcher_producer:
+        class: 'Tests\AppBundle\Test\Producer\ReferentMessageNullProducer'
+
+    old_sound_rabbit_mq.deputy_message_dispatcher_producer:
+        class: 'Tests\AppBundle\Test\Producer\DeputyMessageNullProducer'
+
+    Tests\AppBundle\Consumer\DummyConsumer: ~
+
+    Tests\AppBundle\Test\Payment\PayboxProvider:
+        arguments:
+            - '%env(SSL_PRIVATE_KEY)%'
+
+    algolia.indexer:
+        class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'

@@ -1,0 +1,30 @@
+parameters:
+    timeline_max_messages: 10
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    Algolia\AlgoliaSearchBundle\Indexer\Indexer:
+        class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
+
+    app.geocoder:
+        class: 'Tests\AppBundle\Test\Geocoder\DummyGeocoder'
+        public: false
+
+    app.mailer.transactional_client:
+        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
+        public: false
+
+    app.mailer.campaign_client:
+        class: 'Tests\AppBundle\Test\Mailer\NullEmailClient'
+        public: false
+
+    app.recaptcha.api_client:
+        class: 'Tests\AppBundle\Test\Recaptcha\DummyRecaptchaApiClient'
+        public: false
+
+    algolia.indexer:
+        class: 'Tests\AppBundle\Test\Algolia\DummyIndexer'
